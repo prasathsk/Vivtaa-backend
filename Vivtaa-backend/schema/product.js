@@ -5,10 +5,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Product name is required'],
     },
-    product_id:{
-        type:Number,
+    product_id: {
+        type: Number,
         unique: true,
-        required:false
+        required: false
     },
     price: {
         type: Number,
@@ -55,7 +55,12 @@ const productSchema = new mongoose.Schema({
     delivery_days: {
         type: Number,
         required: false,
-    }
+    },
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: false,
+    },
 });
 
 const Products = mongoose.model('products', productSchema);

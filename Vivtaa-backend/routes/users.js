@@ -10,7 +10,7 @@ const generateRefreshToken = (user, payload) => {
     {
       algorithm: 'HS256',
       expiresIn: '7d',
-      jwtid: `refresh-token-${payload.id}`
+      jwtid: `refresh-token-${payload.id}`,
     });  // 7 days expiry
 };
 
@@ -19,7 +19,7 @@ const generateAccessToken = (user, payload) => {
     {
       algorithm: 'HS256',
       expiresIn: '1h',
-      jwtid: `access-token-${Date.now()}`
+      jwtid: `access-token-${Date.now()}`,
     });  // 1 hour expiry
 };
 

@@ -9,7 +9,7 @@ const yup = require('yup');
 const mongoose = require('mongoose');
 
 // get all product
-router.get('/products', authenticateToken, async (req, res, next) => {
+router.get('/products', authenticateToken, async (req, res) => {
     try {
         const { search = '', page = 1, limit = 10 } = req.query;
         const pageNumber = Number(page);
@@ -25,6 +25,9 @@ router.get('/products', authenticateToken, async (req, res, next) => {
                 ],
             };
         }
+
+        // Filter by user_id
+        searchQuery.user_id = req.user.id;
 
         const [products, total] = await Promise.all([
             Products.find(searchQuery)
@@ -136,7 +139,8 @@ router.post('/file-upload', authenticateToken, upload.array('files', 5), async (
 // create a product
 router.post('/add-product', authenticateToken, async (req, res) => {
     try {
-        const bodyProducts = req.body;
+        const getUserId = req.user.id;
+        const bodyProducts = {...req.body, user_id:getUserId};
 
         await productSchema.validate(req.body, { abortEarly: false });
 
@@ -186,6 +190,21 @@ router.put('/edit-product/:id', authenticateToken, async (req, res) => {
 
         // Validate request body
         await productSchema.validate(bodyProducts, { abortEarly: false });
+
+        // Check if product belongs to user
+        const product = await Products.findById(id);
+        if (!product) {
+            return res.status(404).json({
+                status: 404,
+                message: 'Product not found',
+            });
+        }
+        if (product.user_id.toString() !== req.user.id) {
+            return res.status(403).json({
+                status: 403,
+                message: 'You are not authorized to edit this product',
+            });
+        }
 
         // Update product
         const updatedProduct = await Products.findByIdAndUpdate(
