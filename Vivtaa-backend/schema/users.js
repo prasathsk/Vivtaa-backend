@@ -13,12 +13,12 @@ const userSchema = new mongoose.Schema({
         required: [true, 'password is required'],
         // minlength: [8, 'Password must be at least 8 characters'],
         // maxlength: [16, 'Password must be less than or equal to 16 characters'],
-        validate: {
-            validator: function (v) {
-                return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/.test(v);
-            },
-            message: 'Password must contain at least one uppercase letter, one lowercase letter, one special character, one number, and be between 8 and 16 characters long.'
-        }
+        // validate: {
+        //     validator: function (v) {
+        //         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/.test(v);
+        //     },
+        //     message: 'Password must contain at least one uppercase letter, one lowercase letter, one special character, one number, and be between 8 and 16 characters long.'
+        // }
     }
 }, { timestamps: true });
 

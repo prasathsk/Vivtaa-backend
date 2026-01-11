@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongodbConnection = require('./Database/MongoDb');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 require('dotenv').config();
 mongodbConnection();
@@ -21,6 +22,11 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(cors({
+  origin:'http://localhost:5173',
+  method:['POST', 'GET', 'PUT', 'DELETE'],
+  credentials:true
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
