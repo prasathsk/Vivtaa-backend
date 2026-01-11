@@ -27,7 +27,7 @@ router.get('/products', authenticateToken, async (req, res) => {
         }
 
         // Filter by user_id
-        searchQuery.user_id = req.user.id;
+        // searchQuery.user_id = req.user.id;
 
         const [products, total] = await Promise.all([
             Products.find(searchQuery)
